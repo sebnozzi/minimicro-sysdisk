@@ -588,6 +588,12 @@ toolFuncs[kModeDraw] = function(pp, justDown)
 		// a pixel that's already the fore color; otherwise, draw mode.
 		pcolor = fatbits.pixel(pp.x, pp.y)
 		globals.drawErases = (pcolor == foreColor)
+		// Erase instead of painting if left SHIFT is pressed
+		if key.pressed("left shift") then 
+			globals.drawErases = true
+		else 
+			globals.drawErases = false
+		end if
 	end if
 	if drawErases then c = backColor else c = foreColor
 	for pos in symmetries(pp)
