@@ -584,10 +584,6 @@ end function
 
 toolFuncs[kModeDraw] = function(pp, justDown)
 	if justDown then
-		// On the initial mouse-down, pick erase mode if we're clicking
-		// a pixel that's already the fore color; otherwise, draw mode.
-		pcolor = fatbits.pixel(pp.x, pp.y)
-		globals.drawErases = (pcolor == foreColor)
 		// Erase instead of painting if left SHIFT is pressed
 		if key.pressed("left shift") then 
 			globals.drawErases = true
@@ -845,7 +841,7 @@ colorWheel.updateColor = function()
 	rx = self.knob.x - self.x
 	ry = self.knob.y - self.y
 	c = color.toList(self.image.pixel(rx / self.scale + self.image.width/2, 
-		ry / self.scale + self.image.height/2 ))
+	ry / self.scale + self.image.height/2 ))
 	lv = lightnessSlider.value
 	newColor = color.fromList([c[0] * lv, c[1] * lv, c[2] * lv, alphaSlider.value * 255])
 	curSwatch.setColor newColor
@@ -1041,7 +1037,7 @@ OpenFile.saveToDisk = function()
 	err = file.saveImage(self.path, self.image)
 	if not err then
 		dlog = textUtil.Dialog.make("Saved """ + file.name(self.path) + """",
-		   self.path + char(13) + self.image.width + " x " + self.image.height + " pixels")
+		self.path + char(13) + self.image.width + " x " + self.image.height + " pixels")
 		dlog.okBtn.visible = false
 		dlog.show 2
 	else
@@ -1067,7 +1063,7 @@ OpenFile.close = function()
 end function
 OpenFile.confirmAndClose = function()
 	dlog = textUtil.Dialog.make("Save changes to " + self.tabTitle + "?",
-	  "If you do not save, your changes will be lost.")
+	"If you do not save, your changes will be lost.")
 	dlog.okBtn.caption = "Save"
 	dlog.cancelBtn.visible = true
 	dlog.altBtn.caption = "Don't Save"
@@ -1215,8 +1211,8 @@ previewArea.draw = function()
 	previewArea.frame gfx, color.black
 	img = selectedTab.image
 	gfx.drawImage img, previewArea.midX - img.width*self.scale/2, 
-		previewArea.midY - img.height*self.scale/2,
-		img.width * self.scale, img.height * self.scale//, 0, 0, img.width, img.height
+	previewArea.midY - img.height*self.scale/2,
+	img.width * self.scale, img.height * self.scale//, 0, 0, img.width, img.height
 end function
 
 previewArea.handleClick = function()
